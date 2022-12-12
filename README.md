@@ -1,3 +1,5 @@
+# simple-youtube-server
+
 ## Installation
 
 ```bash
