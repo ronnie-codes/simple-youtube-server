@@ -1,4 +1,4 @@
-export interface MessageEvent {
+export class MessageEvent {
   data: string | object;
   id?: string;
   type?: string;
