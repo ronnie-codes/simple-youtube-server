@@ -4,7 +4,7 @@ import {
   YoutubeRepository,
   YoutubeSession,
   YoutubeSessionCredentials,
-} from './interfaces/youtube-repository.interface';
+} from './interfaces/youtube.interface';
 
 @Injectable()
 export class YoutubeService {
@@ -14,11 +14,11 @@ export class YoutubeService {
     // TODO: Inject observable
     return new Observable((observer) => {
       this.repository.session.once('auth-pending', (data) => {
-        console.log('Sign in pending');
+        console.debug('Sign in pending');
         observer.next({ status: 'pending', data });
       });
       this.repository.session.once('auth', ({ credentials }) => {
-        console.log(`Sign in successful`);
+        console.debug(`Sign in successful`);
         observer.next({ status: 'success', credentials });
       });
       this.repository.session.once('auth-error', (error) => {
@@ -26,7 +26,7 @@ export class YoutubeService {
         observer.error(error);
       });
       this.repository.session.on('update-credentials', ({ credentials }) => {
-        console.log(`New credentials`);
+        console.debug(`New credentials`);
         observer.next({ status: 'success', credentials });
       });
     });
