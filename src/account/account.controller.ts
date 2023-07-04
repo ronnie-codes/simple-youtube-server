@@ -9,7 +9,7 @@ export class AccountController {
   constructor(private readonly service: AccountService) {}
 
   @Sse('sse')
-  sse(): Observable<MessageEvent> {
+  public sse(): Observable<MessageEvent> {
     return this.service.onAccountUpdate().pipe(
       map((data) => {
         return { data };
@@ -18,7 +18,7 @@ export class AccountController {
   }
 
   @Post('sign-in')
-  async signIn(@Body() signInDTO: SignInDTO): Promise<void> {
+  public async signIn(@Body() signInDTO: SignInDTO): Promise<void> {
     const credentials = signInDTO.credentials;
 
     if (credentials) {

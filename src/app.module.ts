@@ -1,21 +1,19 @@
-import { Module, Global } from '@nestjs/common';
+import { Module, Global, DynamicModule } from '@nestjs/common';
 import { YoutubeModule } from './youtube/youtube.module';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
 import { Innertube } from 'youtubei.js';
 import { YOUTUBE_REPOSITORY } from './youtube/youtube.constants';
 import { YtmusicModule } from './ytmusic/ytmusic.module';
 import { YTMUSIC_REPOSITORY } from './ytmusic/ytmusic.constants';
-import { DynamicModule } from '@nestjs/common';
 import { AccountModule } from './account/account.module';
 import { ACCOUNT_REPOSITORY } from './account/account.constants';
 
 @Global()
 @Module({})
 export class AppModule {
-  static create(innertube: Innertube): DynamicModule {
+  public static create(innertube: Innertube): DynamicModule {
     return {
       module: AppModule,
       imports: [

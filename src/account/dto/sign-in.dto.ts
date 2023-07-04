@@ -9,18 +9,18 @@ import { Type } from 'class-transformer';
 
 export class CredentialsDTO {
   @IsString()
-  access_token: string;
+  public access_token: string;
 
   @IsString()
-  refresh_token: string;
+  public refresh_token: string;
 
   @IsDateString()
-  expires: Date;
+  public expires: Date;
 }
 
 export class SignInDTO {
   @ValidateNested()
   @Type(() => CredentialsDTO)
   @IsOptional()
-  credentials?: CredentialsDTO;
+  public credentials?: CredentialsDTO;
 }
