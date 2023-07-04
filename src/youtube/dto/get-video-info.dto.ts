@@ -1,3 +1,3 @@
 export class VideoInfoDTO {
-  video_id: string;
+  public video_id: string;
 }

@@ -1,3 +1,3 @@
 export class AudioInfoDTO {
-  audio_id: string;
+  public audio_id: string;
 }

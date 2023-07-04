@@ -10,7 +10,7 @@ import {
 export class AccountService {
   constructor(private readonly repository: AccountRepository) {}
 
-  onAccountUpdate(): Observable<Account> {
+  public onAccountUpdate(): Observable<Account> {
     // TODO: Inject observable
     return new Observable((observer) => {
       this.repository.once('auth-pending', (data) => {
@@ -32,7 +32,7 @@ export class AccountService {
     });
   }
 
-  async signIn(credentails?: AccountCredentials): Promise<void> {
+  public async signIn(credentails?: AccountCredentials): Promise<void> {
     await this.repository.signIn(credentails);
   }
 }

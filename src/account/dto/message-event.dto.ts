@@ -1,6 +1,6 @@
 export class MessageEvent {
-  data: string | object;
-  id?: string;
-  type?: string;
-  retry?: number;
+  public data: string | object;
+  public id?: string;
+  public type?: string;
+  public retry?: number;
 }

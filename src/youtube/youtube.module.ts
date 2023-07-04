@@ -1,8 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, Inject } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
 import { YoutubeController } from './youtube.controller';
 import { YoutubeRepository } from './interfaces/youtube.interface';
-import { Inject } from '@nestjs/common';
 import { YOUTUBE_REPOSITORY } from 'src/youtube/youtube.constants';
 
 @Module({
