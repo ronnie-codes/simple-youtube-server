@@ -1,7 +1,7 @@
 import { Controller, Sse, Post, Body } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
 import { AccountService } from './account.service';
-import { SignInDTO } from './dto/sign-in.dto';
+import { AccountSignInDTO } from './dto/account.sign-in.dto';
 import { MessageEvent } from './dto/message-event.dto';
 
 @Controller('account')
@@ -18,7 +18,7 @@ export class AccountController {
   }
 
   @Post('sign-in')
-  public async signIn(@Body() signInDTO: SignInDTO): Promise<void> {
+  public async signIn(@Body() signInDTO: AccountSignInDTO): Promise<void> {
     const credentials = signInDTO.credentials;
 
     if (credentials) {
