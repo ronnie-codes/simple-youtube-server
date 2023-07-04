@@ -5,25 +5,38 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { Innertube } from 'youtubei.js';
-import { APP_YOUTUBE } from './constants';
+import { YOUTUBE_REPOSITORY } from './youtube/youtube.constants';
+import { YtmusicModule } from './ytmusic/ytmusic.module';
+import { YTMUSIC_REPOSITORY } from './ytmusic/ytmusic.constants';
+import { DynamicModule } from '@nestjs/common';
 
 @Global()
-@Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    ThrottlerModule.forRoot({ ttl: 30, limit: 10 }),
-    YoutubeModule,
-  ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
-    {
-      provide: APP_YOUTUBE,
-      useFactory: async () => await Innertube.create(),
-    },
-  ],
-  exports: [APP_YOUTUBE],
-})
-export class AppModule {}
+@Module({})
+export class AppModule {
+  static create(innertube: Innertube): DynamicModule {
+    return {
+      module: AppModule,
+      imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        ThrottlerModule.forRoot({ ttl: 30, limit: 10 }),
+        YoutubeModule,
+        YtmusicModule,
+      ],
+      providers: [
+        {
+          provide: APP_GUARD,
+          useClass: ThrottlerGuard,
+        },
+        {
+          provide: YOUTUBE_REPOSITORY,
+          useValue: innertube,
+        },
+        {
+          provide: YTMUSIC_REPOSITORY,
+          useValue: innertube.music,
+        },
+      ],
+      exports: [YOUTUBE_REPOSITORY, YTMUSIC_REPOSITORY],
+    };
+  }
+}

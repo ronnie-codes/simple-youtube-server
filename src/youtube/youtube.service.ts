@@ -36,7 +36,7 @@ export class YoutubeService {
     await this.repository.session.signIn(credentails);
   }
 
-  async getVideo(video_id: string): Promise<any> {
+  async getTrack(video_id: string): Promise<any> {
     return this.repository.getInfo(video_id, 'iOS'); // TODO: get this parameter from app
   }
 

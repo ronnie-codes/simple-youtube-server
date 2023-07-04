@@ -32,8 +32,8 @@ export class YoutubeController {
   }
 
   @Get('video/:id')
-  async getVideo(@Param('id') id: string): Promise<any> {
-    return this.service.getVideo(id);
+  async getTrack(@Param('id') id: string): Promise<any> {
+    return this.service.getTrack(id);
   }
 
   @Get('home-feed')
