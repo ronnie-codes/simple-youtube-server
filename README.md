@@ -1,5 +1,7 @@
 # simple-youtube-server
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/763fa30018e44cfa93ce3e08b5d841b6)](https://app.codacy.com/gh/ronnie-codes/simple-youtube-server/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 ## Installation
 
 ```bash
