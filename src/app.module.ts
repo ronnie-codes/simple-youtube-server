@@ -9,6 +9,8 @@ import { YOUTUBE_REPOSITORY } from './youtube/youtube.constants';
 import { YtmusicModule } from './ytmusic/ytmusic.module';
 import { YTMUSIC_REPOSITORY } from './ytmusic/ytmusic.constants';
 import { DynamicModule } from '@nestjs/common';
+import { AccountModule } from './account/account.module';
+import { ACCOUNT_REPOSITORY } from './account/account.constants';
 
 @Global()
 @Module({})
@@ -19,6 +21,7 @@ export class AppModule {
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         ThrottlerModule.forRoot({ ttl: 30, limit: 10 }),
+        AccountModule,
         YoutubeModule,
         YtmusicModule,
       ],
@@ -26,6 +29,10 @@ export class AppModule {
         {
           provide: APP_GUARD,
           useClass: ThrottlerGuard,
+        },
+        {
+          provide: ACCOUNT_REPOSITORY,
+          useValue: innertube.session,
         },
         {
           provide: YOUTUBE_REPOSITORY,
@@ -36,7 +43,7 @@ export class AppModule {
           useValue: innertube.music,
         },
       ],
-      exports: [YOUTUBE_REPOSITORY, YTMUSIC_REPOSITORY],
+      exports: [ACCOUNT_REPOSITORY, YOUTUBE_REPOSITORY, YTMUSIC_REPOSITORY],
     };
   }
 }
