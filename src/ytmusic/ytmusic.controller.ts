@@ -1,11 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { YoutubeService } from './youtube.service';
+import { YtmusicService } from './ytmusic.service';
 
-@Controller('youtube')
-export class YoutubeController {
-  constructor(private readonly service: YoutubeService) {}
+@Controller('ytmusic')
+export class YtmusicController {
+  constructor(private readonly service: YtmusicService) {}
 
-  @Get('video/:id')
+  @Get('audio/:id')
   async getTrack(@Param('id') id: string): Promise<any> {
     return this.service.getTrack(id);
   }

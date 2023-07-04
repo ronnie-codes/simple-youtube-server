@@ -1,22 +1,49 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module, Global } from '@nestjs/common';
 import { YoutubeModule } from './youtube/youtube.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { Innertube } from 'youtubei.js';
+import { YOUTUBE_REPOSITORY } from './youtube/youtube.constants';
+import { YtmusicModule } from './ytmusic/ytmusic.module';
+import { YTMUSIC_REPOSITORY } from './ytmusic/ytmusic.constants';
+import { DynamicModule } from '@nestjs/common';
+import { AccountModule } from './account/account.module';
+import { ACCOUNT_REPOSITORY } from './account/account.constants';
 
-@Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    ThrottlerModule.forRoot({ ttl: 30, limit: 10, }),
-    YoutubeModule
-  ],
-  controllers: [AppController],
-  providers: [
-    { provide: APP_GUARD, useClass: ThrottlerGuard },
-    AppService
-  ],
-})
-export class AppModule {}
+@Global()
+@Module({})
+export class AppModule {
+  static create(innertube: Innertube): DynamicModule {
+    return {
+      module: AppModule,
+      imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        ThrottlerModule.forRoot({ ttl: 30, limit: 10 }),
+        AccountModule,
+        YoutubeModule,
+        YtmusicModule,
+      ],
+      providers: [
+        {
+          provide: APP_GUARD,
+          useClass: ThrottlerGuard,
+        },
+        {
+          provide: ACCOUNT_REPOSITORY,
+          useValue: innertube.session,
+        },
+        {
+          provide: YOUTUBE_REPOSITORY,
+          useValue: innertube,
+        },
+        {
+          provide: YTMUSIC_REPOSITORY,
+          useValue: innertube.music,
+        },
+      ],
+      exports: [ACCOUNT_REPOSITORY, YOUTUBE_REPOSITORY, YTMUSIC_REPOSITORY],
+    };
+  }
+}
