@@ -18,7 +18,7 @@ export class AccountService {
         observer.next({ status: 'pending', data });
       });
       this.repository.once('auth', ({ credentials }) => {
-        console.debug(`Sign in successful`);
+        console.debug('Sign in successful');
         observer.next({ status: 'success', credentials });
       });
       this.repository.once('auth-error', (error) => {
@@ -26,7 +26,7 @@ export class AccountService {
         observer.error(error);
       });
       this.repository.on('update-credentials', ({ credentials }) => {
-        console.debug(`New credentials`);
+        console.debug('New credentials');
         observer.next({ status: 'success', credentials });
       });
     });
