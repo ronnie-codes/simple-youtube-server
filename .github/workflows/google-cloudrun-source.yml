@@ -53,7 +53,7 @@ on:
 env:
   PROJECT_ID: youtube-app-371507
   SERVICE: simple-youtube-server
-  REGION: us-west2
+  REGION: northamerica-northeast2
 
 jobs:
   deploy:
