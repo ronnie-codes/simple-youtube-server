@@ -14,25 +14,25 @@ export class AccountService {
     // TODO: Inject observable
     return new Observable((observer) => {
       this.repository.once('auth-pending', (data) => {
-        console.debug('Sign in pending');
+        console.log('Sign in pending');
         observer.next({ status: 'pending', data });
       });
-      this.repository.once('auth', ({ credentials }) => {
-        console.debug('Sign in successful');
-        observer.next({ status: 'success', credentials });
+      this.repository.once('auth', () => {
+        console.log('Sign in successful');
+        observer.next({ status: 'success' });
       });
       this.repository.once('auth-error', (error) => {
         console.error(error);
         observer.error(error);
       });
-      this.repository.on('update-credentials', ({ credentials }) => {
-        console.debug('New credentials');
-        observer.next({ status: 'success', credentials });
+      this.repository.on('update-credentials', () => {
+        console.log('New credentials');
+        observer.next({ status: 'success' });
       });
     });
   }
 
-  public async signIn(credentails?: AccountCredentials): Promise<void> {
-    await this.repository.signIn(credentails);
+  public async signIn(): Promise<void> {
+    await this.repository.signIn();
   }
 }

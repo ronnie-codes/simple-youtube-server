@@ -18,16 +18,8 @@ export class AccountController {
   }
 
   @Post('sign-in')
-  public async signIn(@Body() signInDTO: AccountSignInDTO): Promise<void> {
-    const credentials = signInDTO.credentials;
-
-    if (credentials) {
-      return this.service.signIn({
-        access_token: credentials.access_token,
-        refresh_token: credentials.refresh_token,
-        expires: credentials.expires,
-      });
-    }
+  public async signIn(): Promise<void> {
+    // TODO: If necessary, check for existing session and block.
     return this.service.signIn();
   }
 }
