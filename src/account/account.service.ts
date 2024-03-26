@@ -10,6 +10,9 @@ import {
 export class AccountService {
   constructor(private readonly repository: AccountRepository) {}
 
+  // TODO: IF SAFER, STORE IN GCP VERSION OF REDIS
+  private accountCredentials?: AccountCredentials;
+
   public onAccountUpdate(): Observable<Account> {
     // TODO: Inject observable
     return new Observable((observer) => {
@@ -17,7 +20,8 @@ export class AccountService {
         console.log('Sign in pending');
         observer.next({ status: 'pending', data });
       });
-      this.repository.once('auth', () => {
+      this.repository.once('auth', (account: Account) => {
+        this.accountCredentials = account.credentials;
         console.log('Sign in successful');
         observer.next({ status: 'success' });
       });
@@ -25,7 +29,8 @@ export class AccountService {
         console.error(error);
         observer.error(error);
       });
-      this.repository.on('update-credentials', () => {
+      this.repository.on('update-credentials', (account: Account) => {
+        this.accountCredentials = account.credentials;
         console.log('New credentials');
         observer.next({ status: 'success' });
       });
@@ -33,6 +38,6 @@ export class AccountService {
   }
 
   public async signIn(): Promise<void> {
-    await this.repository.signIn();
+    await this.repository.signIn(this.accountCredentials);
   }
 }
