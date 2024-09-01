@@ -1,12 +1,12 @@
-# Reference: https://www.tomray.dev/nestjs-docker-production
-
 ###################
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM node:20-alpine As development
+FROM node:20-alpine AS development
 
 WORKDIR /usr/src/app
+
+RUN npm install -g @nestjs/cli@10.0.0
 
 COPY --chown=node:node package*.json ./
 
@@ -20,7 +20,7 @@ USER node
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:20-alpine As build
+FROM node:21-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -42,7 +42,9 @@ USER node
 # PRODUCTION
 ###################
 
-FROM node:20-alpine As production
+FROM node:20-alpine AS production
+
+WORKDIR /usr/src/app
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
