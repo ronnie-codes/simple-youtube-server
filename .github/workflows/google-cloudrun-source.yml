@@ -51,7 +51,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_ID: youtube-app-371507
+  PROJECT_ID: nonprod2-svc-lpgc
   SERVICE: simple-youtube-server
   REGION: northamerica-northeast2
 
