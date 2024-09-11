@@ -12,6 +12,7 @@ export class AccountController {
   public sse(): Observable<MessageEvent> {
     return this.service.onAccountUpdate().pipe(
       map((data: Account) => {
+        console.log(data);
         return { data };
       }),
     );

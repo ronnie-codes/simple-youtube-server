@@ -1,4 +1,5 @@
 import { Module, Global, DynamicModule } from '@nestjs/common';
+import { CACHE_MANAGER, Cache, CacheModule } from '@nestjs/cache-manager';
 import { YoutubeModule } from './youtube/youtube.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -18,16 +19,13 @@ export class AppModule {
       module: AppModule,
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
+        CacheModule.register({ isGlobal: true }),
         ThrottlerModule.forRoot({ ttl: 30, limit: 10 }),
         AccountModule,
         YoutubeModule,
         YtmusicModule,
       ],
       providers: [
-        {
-          provide: APP_GUARD,
-          useClass: ThrottlerGuard,
-        },
         {
           provide: ACCOUNT_REPOSITORY,
           useValue: innertube.session,
