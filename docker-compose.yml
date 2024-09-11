@@ -15,3 +15,15 @@ services:
     command: npm run start:dev
     ports:
       - 3000:3000
+  
+  test:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Build the same development stage
+      target: development
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .config/development.env
+    command: npm run test

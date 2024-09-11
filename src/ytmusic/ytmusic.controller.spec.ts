@@ -6,9 +6,19 @@ describe('YtmusicController', () => {
   let controller: YtmusicController;
 
   beforeEach(async () => {
+    const mockYtmusicService = {
+      getTrack: jest.fn().mockResolvedValue({}),
+      getHomeFeed: jest.fn().mockResolvedValue({}),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [YtmusicController],
-      providers: [YtmusicService],
+      providers: [
+        {
+          provide: YtmusicService,
+          useValue: mockYtmusicService,
+        },
+      ],
     }).compile();
 
     controller = module.get<YtmusicController>(YtmusicController);

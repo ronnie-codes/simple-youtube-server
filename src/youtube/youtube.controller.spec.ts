@@ -6,9 +6,19 @@ describe('YoutubeController', () => {
   let controller: YoutubeController;
 
   beforeEach(async () => {
+    const mockYoutubeService = {
+      getTrack: jest.fn().mockResolvedValue({}),
+      getHomeFeed: jest.fn().mockResolvedValue({}),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [YoutubeController],
-      providers: [YoutubeService],
+      providers: [
+        {
+          provide: YoutubeService,
+          useValue: mockYoutubeService,
+        },
+      ],
     }).compile();
 
     controller = module.get<YoutubeController>(YoutubeController);
