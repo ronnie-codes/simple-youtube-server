@@ -11,7 +11,7 @@ const bootstrap = async () => {
   const app = await NestFactory.create(AppModule.create(innertube));
   app.useGlobalPipes(new ValidationPipe({ validateCustomDecorators: true }));
   const configService = app.get(ConfigService);
-  const port = configService.get('PORT');
+  const port = process.env.PORT || configService.get('PORT') as string | number;
   await app.listen(port);
 };
 
