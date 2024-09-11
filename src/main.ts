@@ -3,12 +3,14 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
-import { Innertube } from 'youtubei.js';
+import { Innertube, UniversalCache } from 'youtubei.js';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 const bootstrap = async () => {
   // Setup root composition
-  const innertube = await Innertube.create();
+  const innertube = await Innertube.create({
+    cache: new UniversalCache(false)
+  });
   const app = await NestFactory.create(AppModule.create(innertube));
 
   // Setup Globals
