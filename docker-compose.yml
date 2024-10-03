@@ -9,13 +9,21 @@ services:
       target: development
     volumes:
       - .:/usr/src/app
+    depends_on:
+      - redis
     env_file:
     - .config/development.env
     # Run a command against the development stage of the image
     command: npm run start:dev
     ports:
       - 3000:3000
-  
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"  # Optional: Expose Redis on localhost for external access
+    command: redis-server --save "" --appendonly no  # Disables persistence features
+
   test:
     build:
       dockerfile: Dockerfile

@@ -1,5 +1,5 @@
 import { Module, Global, DynamicModule } from '@nestjs/common';
-import { CACHE_MANAGER, Cache, CacheModule } from '@nestjs/cache-manager';
+import { CacheModule } from '@nestjs/cache-manager';
 import { YoutubeModule } from './youtube/youtube.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -10,6 +10,7 @@ import { YtmusicModule } from './ytmusic/ytmusic.module';
 import { YTMUSIC_REPOSITORY } from './ytmusic/ytmusic.constants';
 import { AccountModule } from './account/account.module';
 import { ACCOUNT_REPOSITORY } from './account/account.constants';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Global()
 @Module({})
@@ -18,14 +19,23 @@ export class AppModule {
     return {
       module: AppModule,
       imports: [
+        CacheModule.register<RedisClientOptions>({
+          store: redisStore,
+          host: 'localhost',
+          port: 6379,
+          isGlobal: true
+        }),
         ConfigModule.forRoot({ isGlobal: true }),
-        CacheModule.register({ isGlobal: true }),
         ThrottlerModule.forRoot({ ttl: 30, limit: 10 }),
         AccountModule,
         YoutubeModule,
         YtmusicModule,
       ],
       providers: [
+        {
+          provide: APP_GUARD,
+          useClass: ThrottlerGuard,
+        },
         {
           provide: ACCOUNT_REPOSITORY,
           useValue: innertube.session,
